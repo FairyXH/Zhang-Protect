@@ -1,0 +1,9 @@
+__pycache__
+.venv
+venv
+dist
+build
+.vscode
+.idea
+_resource_data
+_build_validation

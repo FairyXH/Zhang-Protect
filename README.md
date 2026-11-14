@@ -55,16 +55,16 @@ Windows 10/11 x64 上的**整合 / 守护 / 优化**工具集。核心是一个�
 
 | 类别 | 数量 | 代表功能 |
 | --- | ---: | --- |
-| 守护 / 自愈 | 14 | 守护 `explorer.exe` 等进程、看门狗重启、登录自启、维护模式 |
-| 网络 / IP / MAC | 11 | 断网自动换 IP、随机 MAC、多网卡负载均衡、RDPWrap、802.1x 自动结束 |
-| WiFi / 移动热点 | 9 | 自动热点、随机 SSID/密码、360AP 接管、时钟栏显示热点信息 |
-| 游戏优化 | 9 | 游戏时暂停主程序、切高性能电源、屏蔽快捷键、外置红点、P 核绑定 |
-| 电源 / 休眠 | 8 | 电源计划自动切换、合盖睡眠、隐藏电源菜单项、睿频控制 |
-| 显示 / 桌面 / 美化 | 13 | 桌面时钟、iKun 图标每日轮换、隐藏任务栏、去快捷方式箭头、任务栏秒 |
-| 存储 / 文件 | 8 | 存储重定向（不可逆）、文件整理、U 盘写保护、Autorun.inf 陷阱 |
-| 安全 / 隐私 / 更新 | 8 | 关闭 UAC、禁 Windows 更新、清事件日志、禁用 Winmgmt、蓝牙 HFP |
-| 系统维护 | 14 | 系统备份/增量备份、自动重注册 DLL、删 mstsc 记录、清 JetBrains 历史、校时 |
-| 其他 | — | 文件服务器、流量消耗器、截图监控、ShareX 接管截屏、LocalSend 守护 |
+| 显示 / 桌面 / 美化 | 18 | 桌面时钟、iKun 图标每日轮换、隐藏任务栏、去快捷方式箭头、任务栏秒 |
+| 电源 / 休眠 / 合盖 | 13 | 电源计划自动切换、合盖睡眠、隐藏电源菜单项、睿频控制 |
+| 进程守护 | 10 | 守护 `explorer.exe`、DesktopOK、Memreduct、Everything、simplewall、LocalSend |
+| 其他 / 杂项 | 10 | 文件服务器、流量消耗器、截图监控、ShareX 接管截屏、单次强制释放 |
+| 网络 / IP / MAC / RDP | 8 | 断网自动换 IP、随机 MAC、多网卡负载均衡、RDPWrap、802.1x 自动结束 |
+| 游戏优化 | 8 | 游戏时暂停主程序、切高性能电源、屏蔽快捷键、外置红点、P 核绑定 |
+| 安全 / 隐私 | 8 | 关闭 UAC、清事件日志、禁用 Winmgmt、蓝牙 HFP/绝对音量、禁 Hyper-V |
+| WiFi / 移动热点 | 7 | 自动热点、随机 SSID/密码、360AP 接管、隐藏热点设置页 |
+| 维护 / 备份 / 清理 | 7 | 系统备份与每日增量、重注册 DLL、删 mstsc 记录、清 JetBrains 历史、校时 |
+| 存储 / 文件 / U 盘 | 5 | 存储重定向（不可逆）、文件整理、U 盘写保护或共享、Autorun.inf 陷阱 |
 
 能力边界（由源码实现决定）：
 
@@ -173,7 +173,7 @@ Zhang多功能整合程序/
 ├── C++_Files/                  # 自研 C++ 工具源码 14 个
 ├── ZhangProtectPot_C++/        # 守护启动器 C++ 实现
 ├── pyinstaller_hooks/          # 资源收集 + scheduled_tasks 钩子
-├── tests/                      # 回归测试与发布校验 14 个脚本
+├── tests/                      # 回归测试与发布校验 14 个文件（12 个 Python 脚本 + 2 个 C++ 探针）
 ├── docs/AGENT_CONTEXT.md       # 开发交接上下文
 │
 ├── make.bat                    # 主构建：载荷→C++→工具→校验→PyInstaller
@@ -246,7 +246,7 @@ make.bat            :: 或 构建项目.bat
 
 | 路径 | 说明 |
 | --- | --- |
-| `Release\ZhangProtect.exe` | 主程序单文件（约 20MB+，含全部嵌入载荷） |
+| `Release\ZhangProtect.exe` | 主程序单文件，全部载荷内嵌（datas 不压缩），体积约等于 `files\` 合计 + 代码，约 750MB 量级 |
 | `dist\`、`build\`、`*.spec` | 中间物，构建结束后清理 |
 | `_build_validation\prebuild-check.json` | 构建前检查报告 |
 | `..\..\..\..\ZhangProtect.exe` | `构建项目并打包.bat` 复制出的测试副本 |
@@ -345,9 +345,9 @@ del C:\Windows\Protect\openwifi
 
 | 来源 | 数量 | 生成方式 | 示例 |
 | --- | ---: | --- | --- |
-| 自研 C++（有源码） | 15 | `make_C_files.bat`（MinGW64） | `ZhangProtectPot.exe`、`taskbar_hider.exe`、`runas_user.exe`、`TurboSwitch.exe`、`keyboard_filter.exe` |
+| 自研 C++（有源码） | 16 | `make_C_files.bat`（MinGW64，15 份源码，`SetProToPcore` 同时产出 exe/dll） | `ZhangProtectPot.exe`、`taskbar_hider.exe`、`runas_user.exe`、`TurboSwitch.exe`、`keyboard_filter.exe` |
 | Python 打包 | 14 | `make_pythontools_files.bat`（PyInstaller） | `SysDispatch.exe`、`Zhang_ip_helper.exe`、`file_server.exe`、`Disable_Safety.exe`、`StorageRedirect.exe` |
-| 第三方便携软件 | 102 | 作者收集，直接入库 | `CCleaner.7z`、`Everything.7z`、`IDM.7z`、`WizTree.exe`、`RDPWrap.7z`、`PingFangTTF.7z` |
+| 第三方软件与配套资源 | 101 | 作者收集，直接入库（含 dll/ini/inf/字体/文档） | `CCleaner.7z`、`Everything.7z`、`IDM.7z`、`WizTree.exe`、`RDPWrap.7z`、`PingFangTTF.7z` |
 
 完整清单与每个工具的用途见 [`files/README.md` §5](files/README.md)。`makefile.py` 是载荷与变量名的唯一映射表。
 
