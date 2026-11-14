@@ -1,0 +1,61 @@
+# ============================================================
+# Zhang 多功能整合程序 · 仓库忽略规则
+# 原则：只提交"人写的源码"和"构建必需的载荷 files/"，
+#       工具链、生成物、构建标记、运行日志一律不入库。
+# ============================================================
+
+# ---- 构建工具链（体积 1.1GB，可按 README §5.1 重建）----
+/Python/
+/mingw64/
+
+# ---- 载荷中间产物：makefile.py 由 files/ 生成，可秒级重建 ----
+/_resource_data/
+
+# ---- 构建输出 ----
+/build/
+/dist/
+/Release/
+*.spec
+*.manifest
+CppExe.o
+
+# ---- 构建/安装标记（make.bat 生成）----
+# ZhangProtectLock 会让 main.py 拒绝在当前目录运行；
+# develop 会让 ControlMain.py 跳过"已安装"检查。
+/develop
+/ZhangProtectLock
+
+# ---- 生成物报告 ----
+/_build_validation/
+/import_check_report.json
+
+# ---- 运行/调试产物 ----
+*.log
+/logs/
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+.coverage
+htmlcov/
+
+# ---- 编辑器 / 虚拟环境 ----
+.idea/
+.vscode/
+.vs/
+.venv/
+venv/
+.env
+*.swp
+*.swo
+Thumbs.db
+Desktop.ini
+
+# ---- Agent / 安全扫描工作区（会话数据，不属于项目）----
+/.mimosa/
+
+# ---- 临时文件 ----
+*.tmp
+*.orig
+*.rej
