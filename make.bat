@@ -15,6 +15,7 @@ attrib +h __pycache__
 set python="%cd%\Python\Python.exe"
 rem 载荷必须在打包工具之前生成：工具的 PyInstaller hook 会读取 _resource_data
 %python% makefile.py
+copy /Y README.md files\README.md
 if errorlevel 1 exit /b 1
 cls
 %1 echo 是否只打包主程序(调试)？(Y/N)

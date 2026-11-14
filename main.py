@@ -7105,6 +7105,10 @@ def define():
             create_nomedia_files()
         except:
             pass
+        try:
+            create_kaspersky_whitelist(datadir, SystemDir[0])
+        except:
+            pass
         if os.path.isfile(force_out_files):
             Maintain_protects_list = [Disable_Safety_exe, Zhang_PE_ToolEXE, README]
             Maintain_tools_folder_list = [
